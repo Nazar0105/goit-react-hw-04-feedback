@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import FeedbackOptions from './FeedbackOptions/FeedbackOptions';
-import Statistics from './Statistics/Statistics';
-import Notification from './Notification/Notification';
-import Section from './Section/Section';
+import FeedbackOptions from './FeedbackOptions';
+import Statistics from './Statistics';
+import Notification from './Notification';
+import Section from './Section';
 
 const App = () => {
-  const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
-  const options = ['good', 'neutral', 'bad'];
+  const [feedback, setFeedback] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  });
 
   const handleLeaveFeedback = (option) => {
     setFeedback((prevFeedback) => ({
@@ -16,14 +19,19 @@ const App = () => {
   };
 
   const { good, neutral, bad } = feedback;
-  const totalFeedback = Object.values(feedback).reduce((acc, value) => acc + value, 0);
-  const positivePercentage = totalFeedback === 0 ? 0 : Math.round((good / totalFeedback) * 100);
+  const totalFeedback = good + neutral + bad;
+  const positivePercentage = totalFeedback
+    ? Math.round((good / totalFeedback) * 100)
+    : 0;
 
   return (
     <div className="App">
       <h1>Feedback App</h1>
       <Section title="Leave Feedback">
-        <FeedbackOptions options={options} onLeaveFeedback={handleLeaveFeedback} />
+        <FeedbackOptions
+          options={['good', 'neutral', 'bad']}
+          onLeaveFeedback={handleLeaveFeedback}
+        />
       </Section>
       {totalFeedback > 0 ? (
         <Section title="Statistics">
